@@ -38,4 +38,20 @@ The vocabulary includes numbers and product-related terms because numeric values
 
 ---
 
+## Step 4 – Vectorize Documents (Bag-of-Words)
+
+Each preprocessed document is converted into a numerical representation using a Non-Binary Bag-of-Words model. For every review, the vectorizer counts how many times each vocabulary word appears and stores the result as a dictionary mapping words to their counts. For example, the token list `["good", "food", "good"]` becomes `{"good": 2, "food": 1}`. Words that do not appear in the vocabulary are ignored. This vector representation is what the classifiers will use to make predictions.
+
+---
+
+## Step 5 – Split Dataset
+
+The dataset is split into a training set and a test set following the assignment rules.
+The first `TRAIN_SIZE%` of samples are used for training and the remaining samples form
+the test set. For example, with 1000 samples and `TRAIN_SIZE = 80`, the first 800 samples
+are used for training and the last 200 for testing. The split is done by position, not
+randomly, to ensure consistency across runs.
+
+---
+
 ## Project Structure
