@@ -76,5 +76,30 @@ The vocabulary includes numbers and product-related terms because numeric values
 - P(NEGATIVE | S)
 
 ---
+### Step 6B: k-Nearest Neighbors (kNN) Classifier
 
+- Choose a value for k (number of neighbors), e.g., k = 3
+- For each test document:
+  - Compare it with all training documents
+  - Compute distance between their vectors (Euclidean distance)
+- Sort all distances from smallest to largest
+- Select the k closest documents (nearest neighbors)
+- Count how many neighbors are POSITIVE and NEGATIVE
+- Assign the label using majority voting
+
+*Example:*
+
+- k = 3
+- Nearest neighbors labels = [POSITIVE, POSITIVE, NEGATIVE]
+- Prediction = POSITIVE
+
+Output includes:
+
+- Predicted class label for the test document
+
+Note:
+
+- kNN does not train a model in advance
+- It stores all training data and makes predictions based on similarity
+- Smaller distance means more similar documents
 ## Project Structure
