@@ -102,4 +102,35 @@ Note:
 - kNN does not train a model in advance
 - It stores all training data and makes predictions based on similarity
 - Smaller distance means more similar documents
+
+
+## Step 7A: Naïve Bayes Evaluation
+
+- Test the Naïve Bayes classifier on all test documents
+- Compare predicted labels with actual labels
+- Count:
+  - True Positives (TP)
+  - True Negatives (TN)
+  - False Positives (FP)
+  - False Negatives (FN)
+
+Metrics computed:
+- Accuracy
+- Precision
+- Recall
+- Specificity
+- Negative Predictive Value (NPV)
+- F1 Score
+
+Result summary:
+- Accuracy ≈ 87%
+- Precision ≈ 0.89
+- Recall ≈ 0.97
+- Specificity ≈ 0.44
+- NPV ≈ 0.74
+- F1 Score ≈ 0.93
+
+Observation:
+- The model performs well overall and is especially strong at identifying positive reviews.
+- Specificity is lower, which means it is weaker at correctly identifying negative reviews.  
 ## Project Structure
