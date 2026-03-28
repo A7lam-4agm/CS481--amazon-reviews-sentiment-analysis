@@ -76,6 +76,7 @@ The vocabulary includes numbers and product-related terms because numeric values
 - P(NEGATIVE | S)
 
 ---
+
 ### Step 6B: k-Nearest Neighbors (kNN) Classifier
 
 - Choose a value for k (number of neighbors), e.g., k = 3
@@ -93,7 +94,7 @@ The vocabulary includes numbers and product-related terms because numeric values
 - Nearest neighbors labels = [POSITIVE, POSITIVE, NEGATIVE]
 - Prediction = POSITIVE
 
-Output includes:
+**Output includes:**
 
 - Predicted class label for the test document
 
@@ -103,6 +104,7 @@ Note:
 - It stores all training data and makes predictions based on similarity
 - Smaller distance means more similar documents
 
+---
 
 ## Step 7A: Naïve Bayes Evaluation
 
@@ -133,4 +135,41 @@ Result summary:
 Observation:
 - The model performs well overall and is especially strong at identifying positive reviews.
 - Specificity is lower, which means it is weaker at correctly identifying negative reviews.  
+
+---
+
+### Step 7B: kNN Evaluation
+
+- Test the kNN classifier on all documents in the test set
+- Compare predicted labels with actual labels
+- Count:
+  - **True Positives (TP)**
+  - **True Negatives (TN)**
+  - **False Positives (FP)**
+  - **False Negatives (FN)**
+
+**Metrics computed:**
+- Sensitivity (Recall)
+- Specificity
+- Precision
+- Negative Predictive Value (NPV)
+- Accuracy
+- F-score
+
+**Result summary:**
+- True Positives: 
+- True Negatives: 
+- False Positives: 
+- False Negatives: 
+- Sensitivity (Recall): 
+- Specificity: 
+- Precision: 
+- Negative Predictive Value: 
+- Accuracy: 
+- F-score: 
+
+**Observation:**
+- Results to be filled in after Step 11 (full run at the library).
+```
+
 ## Project Structure
