@@ -171,8 +171,11 @@ Observation:
 
 **Observation:**
 - Results to be filled in after Step 11 (full run at the library).
-```
+
+---
+
 ### Step 8: Display Results
+
 - Output evaluation metrics in the exact format required by the assignment
 - Metrics are printed after testing is complete:
   - **Number of true positives**
