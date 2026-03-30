@@ -45,6 +45,7 @@ def compute_metrics(tp, tn, fp, fn):
 def evaluate_naive_bayes(train_df, test_df):
     nb = NaiveBayesClassifier()
     nb.train(train_df)
+    print("Testing classifier...")
 
     tp = tn = fp = fn = 0
 
@@ -68,17 +69,17 @@ def evaluate_naive_bayes(train_df, test_df):
 
 
 def print_metrics(metrics):
-    print("Test results / metrics:")
-    print(f"    Number of true positives: {metrics['tp']}")
-    print(f"    Number of true negatives: {metrics['tn']}")
-    print(f"    Number of false positives: {metrics['fp']}")
-    print(f"    Number of false negatives: {metrics['fn']}")
-    print(f"    Sensitivity (recall): {metrics['sensitivity']:.4f}")
-    print(f"    Specificity: {metrics['specificity']:.4f}")
-    print(f"    Precision: {metrics['precision']:.4f}")
-    print(f"    Negative predictive value: {metrics['npv']:.4f}")
-    print(f"    Accuracy: {metrics['accuracy']:.4f}")
-    print(f"    F-score: {metrics['f_score']:.4f}")
+    print("\nTest results / metrics:")
+    print(f"Number of true positives: {metrics['tp']}")
+    print(f"Number of true negatives: {metrics['tn']}")
+    print(f"Number of false positives: {metrics['fp']}")
+    print(f"Number of false negatives: {metrics['fn']}")
+    print(f"Sensitivity (recall): {metrics['sensitivity']:.4f}")
+    print(f"Specificity: {metrics['specificity']:.4f}")
+    print(f"Precision: {metrics['precision']:.4f}")
+    print(f"Negative predictive value: {metrics['npv']:.4f}")
+    print(f"Accuracy: {metrics['accuracy']:.4f}")
+    print(f"F-score: {metrics['f_score']:.4f}")
 
 
 def run_nb_evaluation(train_size=80):

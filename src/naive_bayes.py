@@ -17,7 +17,6 @@ class NaiveBayesClassifier:
         Computes prior and likelihood probabilities from the training set.
         Uses Add-1 (Laplace) smoothing for likelihoods.
         """
-        print("Training classifier...")
 
         total_docs = len(train_df)
         classes = train_df["Label"].unique()  # ["POSITIVE", "NEGATIVE"]
