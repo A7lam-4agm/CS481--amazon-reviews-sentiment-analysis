@@ -26,4 +26,4 @@ if __name__ == "__main__":
 
     print(f"Total samples : {len(df)}")
     print(f"Training set  : {len(train_df)} samples (first {TRAIN_SIZE}%)")
-    print(f"Test set      : {len(test_df)} samples (last {100 - TRAIN_SIZE}%)")
+    print(f"Test set      : {len(test_df)} samples (always last 20%)")
