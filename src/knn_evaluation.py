@@ -60,16 +60,16 @@ def evaluate_knn(train_df, test_df, k=3):
 
     # ── Display results ───────────────────────────────────────────────────
     print("\nTest results / metrics:")
-    print(f"Number of true positives:  {TP}")
-    print(f"Number of true negatives:  {TN}")
+    print(f"Number of true positives: {TP}")
+    print(f"Number of true negatives: {TN}")
     print(f"Number of false positives: {FP}")
     print(f"Number of false negatives: {FN}")
-    print(f"Sensitivity (recall):      {sensitivity:.4f}")
-    print(f"Specificity:               {specificity:.4f}")
-    print(f"Precision:                 {precision:.4f}")
+    print(f"Sensitivity (recall): {sensitivity:.4f}")
+    print(f"Specificity: {specificity:.4f}")
+    print(f"Precision: {precision:.4f}")
     print(f"Negative predictive value: {npv:.4f}")
-    print(f"Accuracy:                  {accuracy:.4f}")
-    print(f"F-score:                   {fscore:.4f}")
+    print(f"Accuracy: {accuracy:.4f}")
+    print(f"F-score: {fscore:.4f}")
 
     return {
         "TP": TP, "TN": TN, "FP": FP, "FN": FN,
