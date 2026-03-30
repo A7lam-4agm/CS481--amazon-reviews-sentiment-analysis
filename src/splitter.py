@@ -6,21 +6,12 @@ from vectorizer import vectorize_dataset
 TRAIN_SIZE = 80  # percentage
 
 def split_dataset(df, train_size=TRAIN_SIZE):
-    """
-    Splits the dataset into training and test sets.
-    Training set: first train_size% of samples
-    Test set: last (100 - train_size)% of samples
-
-    Example:
-        Dataset size = 1000, train_size = 80
-        Training = first 800 samples
-        Testing  = last  200 samples
-    """
     n = len(df)
-    train_end = int(n * train_size / 100)
+    train_end  = int(n * train_size / 100)
+    test_start = int(n * 0.80)          # test is ALWAYS last 20%
 
     train_df = df.iloc[:train_end].reset_index(drop=True)
-    test_df  = df.iloc[train_end:].reset_index(drop=True)
+    test_df  = df.iloc[test_start:].reset_index(drop=True)
 
     return train_df, test_df
 

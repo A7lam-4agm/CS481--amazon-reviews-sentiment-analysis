@@ -52,13 +52,14 @@ The vocabulary includes numbers and product-related terms because numeric values
 
 ### Step 5: Split Dataset
 - Split the dataset by position (not randomly)
-- Training set: first `TRAIN_SIZE%` of samples
-- Test set: remaining samples after training split
+- Training set: first `TRAIN_SIZE%` of samples (between 50% and 80%)
+- Test set: always the **last 20%** of samples (fixed)
+- Note: if `TRAIN_SIZE < 80`, there will be a gap between train and test that is not used
 
 **Example:**
 - Dataset size = 1000, `TRAIN_SIZE = 80`
 - Training = first 800 samples
-- Testing = last 200 samples
+- Testing = last 200 samples (always)
 
 ---
 
@@ -170,6 +171,49 @@ Observation:
 
 **Observation:**
 - Results to be filled in after Step 11 (full run at the library).
+```
+### Step 8: Display Results
+- Output evaluation metrics in the exact format required by the assignment
+- Metrics are printed after testing is complete:
+  - **Number of true positives**
+  - **Number of true negatives**
+  - **Number of false positives**
+  - **Number of false negatives**
+  - **Sensitivity (recall)**
+  - **Specificity**
+  - **Precision**
+  - **Negative predictive value**
+  - **Accuracy**
+  - **F-score**
+
+---
+
+### Step 9: Interactive Sentence Classification
+- After testing, the user is prompted to enter a sentence
+- The sentence goes through the same pipeline:
+  - Preprocessing (lowercase, remove punctuation, tokenize)
+  - Vectorization (Bag-of-Words)
+  - Classification using the selected algorithm
+- Output format:
+```
+  Sentence/document S: This product tastes amazing
+  was classified as POSITIVE.
+```
+- For **Naïve Bayes only**, also prints:
+```
+  P(POSITIVE | S) = xxxx
+  P(NEGATIVE | S) = xxxx
+```
+
+---
+
+### Step 10: Repeat Classification Loop
+- After each classification, the user is asked:
+```
+  Do you want to enter another sentence [Y/N]?
+```
+- If **Y**: classify a new sentence without retraining
+- If **N**: program exits
 ```
 
 ## Project Structure
