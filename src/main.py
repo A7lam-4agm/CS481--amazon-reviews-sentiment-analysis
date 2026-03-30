@@ -4,10 +4,9 @@ from preprocessing import preprocess_dataset, preprocess
 from vocabulary import build_vocabulary
 from vectorizer import vectorize_dataset, vectorize_document
 from splitter import split_dataset
-from naive_bayes import NaiveBayesClassifier
-from knn import predict_knn
-from nb_evaluation import evaluate_nb
+from nb_evaluation import evaluate_naive_bayes, print_metrics
 from knn_evaluation import evaluate_knn
+from knn import predict_knn
 
 # ─────────────────────────────────────────────
 # COMMAND LINE ARGUMENTS
@@ -86,7 +85,7 @@ def main():
 
     algo_name = "Naive Bayes" if ALGO == 0 else "K Nearest Neighbors"
 
-    print("Konan, Otioh Marie-Lynn Corianne Delon, A20541182 solution:")
+    print("Last Name, First Name, AXXXXXXXX solution:")
     print(f"Training set size: {TRAIN_SIZE} %")
     print(f"Classifier type: {algo_name}")
 
@@ -97,17 +96,14 @@ def main():
     df = vectorize_dataset(df, vocab)
     train_df, test_df = split_dataset(df, TRAIN_SIZE)
 
-    # ── Train ─────────────────────────────────
+    # ── Train and Test ────────────────────────
     nb = None
-    print("Training classifier...")
     if ALGO == 0:
-        nb = NaiveBayesClassifier()
-        nb.train(train_df)
-
-    # ── Test ──────────────────────────────────
-    if ALGO == 0:
-        evaluate_nb(nb, test_df)
+        print("Training classifier...")
+        nb, metrics = evaluate_naive_bayes(train_df, test_df)
+        print_metrics(metrics)
     else:
+        print("Training classifier...")
         evaluate_knn(train_df, test_df, k=3)
 
     # ── Interactive classification ────────────
