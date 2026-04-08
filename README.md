@@ -107,40 +107,43 @@ Note:
 
 ---
 
-## Step 7A: Naïve Bayes Evaluation
-
+### Step 7A: Naïve Bayes Evaluation
 - Test the Naïve Bayes classifier on all test documents
 - Compare predicted labels with actual labels
 - Count:
-  - True Positives (TP)
-  - True Negatives (TN)
-  - False Positives (FP)
-  - False Negatives (FN)
+  - **True Positives (TP)**
+  - **True Negatives (TN)**
+  - **False Positives (FP)**
+  - **False Negatives (FN)**
 
-Metrics computed:
-- Accuracy
-- Precision
-- Recall
+**Metrics computed:**
+- Sensitivity (Recall)
 - Specificity
+- Precision
 - Negative Predictive Value (NPV)
-- F1 Score
+- Accuracy
+- F-score
 
-Result summary:
-- Accuracy ≈ 87%
-- Precision ≈ 0.89
-- Recall ≈ 0.97
-- Specificity ≈ 0.44
-- NPV ≈ 0.74
-- F1 Score ≈ 0.93
+**Result summary (TRAIN_SIZE = 80):**
+- True Positives: 1451
+- True Negatives: 145
+- False Positives: 181
+- False Negatives: 51
+- Sensitivity (Recall): 0.9660
+- Specificity: 0.4448
+- Precision: 0.8891
+- Negative Predictive Value: 0.7398
+- Accuracy: 0.8731
+- F-score: 0.9260
 
-Observation:
+**Observation:**
 - The model performs well overall and is especially strong at identifying positive reviews.
-- Specificity is lower, which means it is weaker at correctly identifying negative reviews.  
+- Specificity is lower, which means it is weaker at correctly identifying negative reviews.
+- This is largely explained by the class imbalance in the dataset (83.3% POSITIVE vs 16.7% NEGATIVE).
 
 ---
 
 ### Step 7B: kNN Evaluation
-
 - Test the kNN classifier on all documents in the test set
 - Compare predicted labels with actual labels
 - Count:
@@ -157,20 +160,22 @@ Observation:
 - Accuracy
 - F-score
 
-**Result summary:**
-- True Positives: 
-- True Negatives: 
-- False Positives: 
-- False Negatives: 
-- Sensitivity (Recall): 
-- Specificity: 
-- Precision: 
-- Negative Predictive Value: 
-- Accuracy: 
-- F-score: 
+**Result summary (TRAIN_SIZE = 80):**
+- True Positives: 1457
+- True Negatives: 37
+- False Positives: 289
+- False Negatives: 45
+- Sensitivity (Recall): 0.9700
+- Specificity: 0.1135
+- Precision: 0.8345
+- Negative Predictive Value: 0.4512
+- Accuracy: 0.8173
+- F-score: 0.8972
 
 **Observation:**
-- Results to be filled in after Step 11 (full run at the library).
+- kNN struggles significantly with identifying negative reviews (Specificity = 0.1135).
+- Almost all test documents were classified as POSITIVE due to class imbalance in the dataset.
+- kNN is less suited for high-dimensional text data compared to Naïve Bayes.
 
 ---
 
@@ -212,11 +217,83 @@ Observation:
 
 ### Step 10: Repeat Classification Loop
 - After each classification, the user is asked:
-```
-  Do you want to enter another sentence [Y/N]?
-```
+Do you want to enter another sentence [Y/N]?
 - If **Y**: classify a new sentence without retraining
 - If **N**: program exits
-```
+
+---
+
+### Step 11: Exploratory Data Analysis (EDA)
+- After seeing the results from the KNN which classified every review as POSITIVE, we tried analyzing the dataset before training to understand its structure and distribution
+
+**Results:**
+- Total samples: 9,138
+- POSITIVE: 7,616 samples (83.3%)
+- NEGATIVE: 1,522 samples (16.7%)
+- Average review length (POSITIVE): 72.6 words
+- Average review length (NEGATIVE): 86.7 words
+- Shortest review: 10 words
+- Longest review: 1,513 words
+
+**Observation:**
+- The dataset is heavily imbalanced with a 5:1 ratio of positive to negative reviews.
+- Negative reviews tend to be longer on average, likely because unhappy customers write more to explain their complaints.
+- This imbalance directly explains the low specificity of both classifiers on the original dataset.
+
+---
+
+### Step 12: Balanced Dataset Experiment
+- To address class imbalance, the dataset was balanced by taking equal numbers of POSITIVE and NEGATIVE samples
+- 1,522 POSITIVE and 1,522 NEGATIVE reviews were kept (3,044 total)
+- The balanced dataset was shuffled before splitting to ensure even distribution across train and test sets
+
+**Naïve Bayes results (Balanced, TRAIN_SIZE = 80):**
+- True Positives: 248
+- True Negatives: 278
+- False Positives: 33
+- False Negatives: 50
+- Sensitivity (Recall): 0.8322
+- Specificity: 0.8939
+- Precision: 0.8826
+- Negative Predictive Value: 0.8476
+- Accuracy: 0.8637
+- F-score: 0.8566
+
+**kNN results (Balanced, TRAIN_SIZE = 80):**
+- True Positives: 245
+- True Negatives: 155
+- False Positives: 156
+- False Negatives: 53
+- Sensitivity (Recall): 0.8221
+- Specificity: 0.4984
+- Precision: 0.6110
+- Negative Predictive Value: 0.7452
+- Accuracy: 0.6568
+- F-score: 0.7010
+
+**Observation:**
+- Balancing the dataset significantly improved Naïve Bayes specificity from 0.4448 to 0.8939 — it now identifies negative reviews much more accurately.
+- kNN improved slightly but still struggled, classifying most sentences as POSITIVE.
+- Naïve Bayes is clearly better suited for this text classification task.
+
+---
+
+## Full Results Comparison
+
+| Metric | NB Original | NB Balanced | kNN Original | kNN Balanced |
+|---|---|---|---|---|
+| True Positives | 1451 | 248 | 1457 | 245 |
+| True Negatives | 145 | 278 | 37 | 155 |
+| False Positives | 181 | 33 | 289 | 156 |
+| False Negatives | 51 | 50 | 45 | 53 |
+| Sensitivity | 0.9660 | 0.8322 | 0.9700 | 0.8221 |
+| Specificity | 0.4448 | 0.8939 | 0.1135 | 0.4984 |
+| Precision | 0.8891 | 0.8826 | 0.8345 | 0.6110 |
+| NPV | 0.7398 | 0.8476 | 0.4512 | 0.7452 |
+| Accuracy | 0.8731 | 0.8637 | 0.8173 | 0.6568 |
+| F-score | 0.9260 | 0.8566 | 0.8972 | 0.7010 |
+
+
+---
 
 ## Project Structure
