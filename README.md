@@ -298,6 +298,7 @@ Do you want to enter another sentence [Y/N]?
 
 ## Project Structure
 
+```
 CS481--amazon-reviews-sentiment-analysis/
 ├── data/
 │   └── Reviews.csv              # Dataset (not tracked by git)
@@ -316,3 +317,4 @@ CS481--amazon-reviews-sentiment-analysis/
 │   └── main_balanced.py         # Main entry point (balanced dataset)
 ├── .gitignore
 └── README.md
+```
