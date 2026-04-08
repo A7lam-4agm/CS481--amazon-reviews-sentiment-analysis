@@ -297,3 +297,24 @@ Do you want to enter another sentence [Y/N]?
 ---
 
 ## Project Structure
+
+```
+CS481--amazon-reviews-sentiment-analysis/
+├── data/
+│   └── Reviews.csv              # Dataset (not tracked by git)
+├── src/
+│   ├── data_loader.py           # Step 1: Load and label dataset
+│   ├── preprocessing.py         # Step 2: Lowercase, remove punctuation, tokenize
+│   ├── vocabulary.py            # Step 3: Build vocabulary from all tokens
+│   ├── vectorizer.py            # Step 4: Bag-of-Words vectorization
+│   ├── splitter.py              # Step 5: Train/test split + balance dataset
+│   ├── naive_bayes.py           # Step 6A: Naïve Bayes classifier
+│   ├── knn.py                   # Step 6B: kNN classifier
+│   ├── nb_evaluation.py         # Step 7A: Evaluate Naïve Bayes
+│   ├── knn_evaluation.py        # Step 7B: Evaluate kNN
+│   ├── eda.py                   # Exploratory Data Analysis
+│   ├── main.py                  # Main entry point (original dataset)
+│   └── main_balanced.py         # Main entry point (balanced dataset)
+├── .gitignore
+└── README.md
+```
