@@ -14,6 +14,7 @@ The project is divided into steps:
 - Convert scores into labels:
   - POSITIVE (score ≥ 4)
   - NEGATIVE (score ≤ 2)
+  - Score = 3 (neutral) is dropped
 
 ---
 
@@ -30,11 +31,8 @@ The project is divided into steps:
 - Use a Python set to keep only unique words
 - Convert it into a sorted list
 
-**Result:**
-- Vocabulary size ≈ 23,000 words
-
 **Note:**
-The vocabulary includes numbers and product-related terms because numeric values were not removed during preprocessing.
+The vocabulary includes numbers and product-related terms because numeric values were not removed during preprocessing. Per professor instructions, vocabulary is built from the entire dataset before splitting.
 
 ---
 
@@ -79,7 +77,6 @@ The vocabulary includes numbers and product-related terms because numeric values
 ---
 
 ### Step 6B: k-Nearest Neighbors (kNN) Classifier
-
 - Choose a value for k (number of neighbors), e.g., k = 3
 - For each test document:
   - Compare it with all training documents
@@ -89,18 +86,12 @@ The vocabulary includes numbers and product-related terms because numeric values
 - Count how many neighbors are POSITIVE and NEGATIVE
 - Assign the label using majority voting
 
-*Example:*
-
+**Example:**
 - k = 3
 - Nearest neighbors labels = [POSITIVE, POSITIVE, NEGATIVE]
 - Prediction = POSITIVE
 
-**Output includes:**
-
-- Predicted class label for the test document
-
-Note:
-
+**Note:**
 - kNN does not train a model in advance
 - It stores all training data and makes predictions based on similarity
 - Smaller distance means more similar documents
@@ -110,89 +101,55 @@ Note:
 ### Step 7A: Naïve Bayes Evaluation
 - Test the Naïve Bayes classifier on all test documents
 - Compare predicted labels with actual labels
-- Count:
-  - **True Positives (TP)**
-  - **True Negatives (TN)**
-  - **False Positives (FP)**
-  - **False Negatives (FN)**
 
-**Metrics computed:**
-- Sensitivity (Recall)
-- Specificity
-- Precision
-- Negative Predictive Value (NPV)
-- Accuracy
-- F-score
-
-**Result summary (TRAIN_SIZE = 80):**
-- True Positives: 1451
-- True Negatives: 145
-- False Positives: 181
-- False Negatives: 51
-- Sensitivity (Recall): 0.9660
-- Specificity: 0.4448
-- Precision: 0.8891
-- Negative Predictive Value: 0.7398
-- Accuracy: 0.8731
-- F-score: 0.9260
+**Result summary (Full dataset, TRAIN_SIZE = 80):**
+- True Positives: 84,902
+- True Negatives: 11,411
+- False Positives: 4,349
+- False Negatives: 4,501
+- Sensitivity (Recall): 0.9497
+- Specificity: 0.7240
+- Precision: 0.9513
+- Negative Predictive Value: 0.7171
+- Accuracy: 0.9158
+- F-score: 0.9505
 
 **Observation:**
-- The model performs well overall and is especially strong at identifying positive reviews.
-- Specificity is lower, which means it is weaker at correctly identifying negative reviews.
-- This is largely explained by the class imbalance in the dataset (83.3% POSITIVE vs 16.7% NEGATIVE).
+- Naïve Bayes achieves 91.6% accuracy on the full dataset
+- Specificity improved significantly with more data (0.44 → 0.72)
+- Still slightly biased toward POSITIVE due to class imbalance (84.4% vs 15.6%)
 
 ---
 
 ### Step 7B: kNN Evaluation
 - Test the kNN classifier on all documents in the test set
 - Compare predicted labels with actual labels
-- Count:
-  - **True Positives (TP)**
-  - **True Negatives (TN)**
-  - **False Positives (FP)**
-  - **False Negatives (FN)**
 
-**Metrics computed:**
-- Sensitivity (Recall)
-- Specificity
-- Precision
-- Negative Predictive Value (NPV)
-- Accuracy
-- F-score
+**Result summary (50,000 rows, TRAIN_SIZE = 80):**
+- True Positives: 7,409
+- True Negatives: 230
+- False Positives: 1,279
+- False Negatives: 273
+- Sensitivity (Recall): 0.9645
+- Specificity: 0.1524
+- Precision: 0.8528
+- Negative Predictive Value: 0.4573
+- Accuracy: 0.8311
+- F-score: 0.9052
 
-**Result summary (TRAIN_SIZE = 80):**
-- True Positives: 1457
-- True Negatives: 37
-- False Positives: 289
-- False Negatives: 45
-- Sensitivity (Recall): 0.9700
-- Specificity: 0.1135
-- Precision: 0.8345
-- Negative Predictive Value: 0.4512
-- Accuracy: 0.8173
-- F-score: 0.8972
+**Note on dataset size:**
+Due to kNN's O(n²) complexity, we limited kNN to 50,000 rows. Naïve Bayes was run on the full 568,454 row dataset since it trains in minutes regardless of dataset size.
 
 **Observation:**
-- kNN struggles significantly with identifying negative reviews (Specificity = 0.1135).
-- Almost all test documents were classified as POSITIVE due to class imbalance in the dataset.
-- kNN is less suited for high-dimensional text data compared to Naïve Bayes.
+- kNN struggles significantly with identifying negative reviews (Specificity = 0.1524)
+- Almost all test documents classified as POSITIVE due to class imbalance
+- kNN is less suited for high-dimensional text data compared to Naïve Bayes
 
 ---
 
 ### Step 8: Display Results
-
 - Output evaluation metrics in the exact format required by the assignment
-- Metrics are printed after testing is complete:
-  - **Number of true positives**
-  - **Number of true negatives**
-  - **Number of false positives**
-  - **Number of false negatives**
-  - **Sensitivity (recall)**
-  - **Specificity**
-  - **Precision**
-  - **Negative predictive value**
-  - **Accuracy**
-  - **F-score**
+- Metrics are printed after testing is complete
 
 ---
 
@@ -217,82 +174,84 @@ Note:
 
 ### Step 10: Repeat Classification Loop
 - After each classification, the user is asked:
-Do you want to enter another sentence [Y/N]?
+```
+  Do you want to enter another sentence [Y/N]?
+```
 - If **Y**: classify a new sentence without retraining
 - If **N**: program exits
 
 ---
 
 ### Step 11: Exploratory Data Analysis (EDA)
-- After seeing the results from the KNN which classified every review as POSITIVE, we tried analyzing the dataset before training to understand its structure and distribution
+- Analyzed the full dataset before training
 
-**Results:**
-- Total samples: 9,138
-- POSITIVE: 7,616 samples (83.3%)
-- NEGATIVE: 1,522 samples (16.7%)
-- Average review length (POSITIVE): 72.6 words
-- Average review length (NEGATIVE): 86.7 words
-- Shortest review: 10 words
-- Longest review: 1,513 words
+**Results (Full dataset):**
+- Total samples: 525,814
+- POSITIVE: 443,777 samples (84.4%)
+- NEGATIVE: 82,037 samples (15.6%)
+- Average review length (POSITIVE): 77.3 words
+- Average review length (NEGATIVE): 88.3 words
+- Shortest review: 3 words
+- Longest review: 2,520 words
 
 **Observation:**
-- The dataset is heavily imbalanced with a 5:1 ratio of positive to negative reviews.
-- Negative reviews tend to be longer on average, likely because unhappy customers write more to explain their complaints.
-- This imbalance directly explains the low specificity of both classifiers on the original dataset.
+- Dataset is heavily imbalanced with a 5:1 ratio of positive to negative reviews
+- Negative reviews are longer on average — unhappy customers write more detailed complaints
+- This imbalance directly explains the low specificity of both classifiers
 
 ---
 
 ### Step 12: Balanced Dataset Experiment
 - To address class imbalance, the dataset was balanced by taking equal numbers of POSITIVE and NEGATIVE samples
-- 1,522 POSITIVE and 1,522 NEGATIVE reviews were kept (3,044 total)
-- The balanced dataset was shuffled before splitting to ensure even distribution across train and test sets
+- 82,037 POSITIVE and 82,037 NEGATIVE reviews kept (164,074 total)
+- The balanced dataset was shuffled before splitting to ensure even distribution
 
 **Naïve Bayes results (Balanced, TRAIN_SIZE = 80):**
-- True Positives: 248
-- True Negatives: 278
-- False Positives: 33
-- False Negatives: 50
-- Sensitivity (Recall): 0.8322
-- Specificity: 0.8939
-- Precision: 0.8826
-- Negative Predictive Value: 0.8476
-- Accuracy: 0.8637
-- F-score: 0.8566
+- True Positives: 14,538
+- True Negatives: 14,333
+- False Positives: 2,168
+- False Negatives: 1,776
+- Sensitivity (Recall): 0.8911
+- Specificity: 0.8686
+- Precision: 0.8702
+- Negative Predictive Value: 0.8898
+- Accuracy: 0.8798
+- F-score: 0.8806
 
-**kNN results (Balanced, TRAIN_SIZE = 80):**
-- True Positives: 245
-- True Negatives: 155
-- False Positives: 156
-- False Negatives: 53
-- Sensitivity (Recall): 0.8221
-- Specificity: 0.4984
-- Precision: 0.6110
-- Negative Predictive Value: 0.7452
-- Accuracy: 0.6568
-- F-score: 0.7010
+**kNN results (Balanced, 50k rows, TRAIN_SIZE = 80):**
+- True Positives: 1,191
+- True Negatives: 819
+- False Positives: 706
+- False Negatives: 298
+- Sensitivity (Recall): 0.7999
+- Specificity: 0.5370
+- Precision: 0.6278
+- Negative Predictive Value: 0.7332
+- Accuracy: 0.6669
+- F-score: 0.7035
 
 **Observation:**
-- Balancing the dataset significantly improved Naïve Bayes specificity from 0.4448 to 0.8939 — it now identifies negative reviews much more accurately.
-- kNN improved slightly but still struggled, classifying most sentences as POSITIVE.
-- Naïve Bayes is clearly better suited for this text classification task.
+- Balancing dramatically improved NB specificity from 0.7240 to 0.8686
+- NB balanced is now nearly symmetric — performs similarly on both classes
+- kNN improved from 0.1524 to 0.5370 specificity but still underperforms
+- Naïve Bayes is clearly better suited for this text classification task
 
 ---
 
 ## Full Results Comparison
 
-| Metric | NB Original | NB Balanced | kNN Original | kNN Balanced |
+| Metric | NB Full Dataset | NB Balanced | kNN 50k | kNN Balanced |
 |---|---|---|---|---|
-| True Positives | 1451 | 248 | 1457 | 245 |
-| True Negatives | 145 | 278 | 37 | 155 |
-| False Positives | 181 | 33 | 289 | 156 |
-| False Negatives | 51 | 50 | 45 | 53 |
-| Sensitivity | 0.9660 | 0.8322 | 0.9700 | 0.8221 |
-| Specificity | 0.4448 | 0.8939 | 0.1135 | 0.4984 |
-| Precision | 0.8891 | 0.8826 | 0.8345 | 0.6110 |
-| NPV | 0.7398 | 0.8476 | 0.4512 | 0.7452 |
-| Accuracy | 0.8731 | 0.8637 | 0.8173 | 0.6568 |
-| F-score | 0.9260 | 0.8566 | 0.8972 | 0.7010 |
-
+| True Positives | 84,902 | 14,538 | 7,409 | 1,191 |
+| True Negatives | 11,411 | 14,333 | 230 | 819 |
+| False Positives | 4,349 | 2,168 | 1,279 | 706 |
+| False Negatives | 4,501 | 1,776 | 273 | 298 |
+| Sensitivity | 0.9497 | 0.8911 | 0.9645 | 0.7999 |
+| Specificity | 0.7240 | 0.8686 | 0.1524 | 0.5370 |
+| Precision | 0.9513 | 0.8702 | 0.8528 | 0.6278 |
+| NPV | 0.7171 | 0.8898 | 0.4573 | 0.7332 |
+| Accuracy | 0.9158 | 0.8798 | 0.8311 | 0.6669 |
+| F-score | 0.9505 | 0.8806 | 0.9052 | 0.7035 |
 
 ---
 
