@@ -255,6 +255,21 @@ Due to kNN's O(n²) complexity, we limited kNN to 50,000 rows. Naïve Bayes was 
 
 ---
 
+### ROC Curve Analysis
+
+Real ROC curves were computed from actual classifier probability outputs:
+
+- **Naïve Bayes** — 8,736 real threshold points computed from continuous 
+  P(POSITIVE|S) scores. AUC = 0.9067.
+- **kNN (k=3)** — 4 operating points computed from vote proportion scores 
+  (0.0, 0.333, 0.667, 1.0). AUC = 0.5714.
+
+ROC scores were computed using numpy vectorized matrix multiplication 
+for efficiency. This is not part of the classifier implementation — 
+it was used solely for visualization purposes.
+
+---
+
 ## Project Structure
 
 ```
